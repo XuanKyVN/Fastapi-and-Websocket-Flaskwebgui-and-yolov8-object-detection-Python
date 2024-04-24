@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Live Streaming</title>
+    </head>
+    <body>
+
+    <div class="container">
+
+        <h1>FastAPI Desktop Application</h1>
+
+        <a href="\home">Go home</a>
+    </div>
+    <a href="/close" class="exit" role="button" >CLOSE   </a>
+
+
+
+        <img id="frame" src="">
+        <div id="textArea"> Pham Xuan Ky</div>
+        <div id="textArea1"> Pham Xuan Ky</div>
+
+        <script>
+            //let ws = new WebSocket("ws://localhost:8000/ws");
+            //let ws = new WebSocket("ws://192.168.1.12:8000/ws");
+            let ws = new WebSocket('ws://' + document.domain + ':' + location.port +"/ws");
+            let image = document.getElementById("frame");
+            image.onload = function(){
+                URL.revokeObjectURL(this.src); // release the blob URL once the image is loaded
+            } 
+            ws.onmessage = function(event) {
+                if (typeof event.data === 'string') 
+                    document.getElementById("textArea").innerHTML = event.data;
+                else
+                    image.src = URL.createObjectURL(event.data);
+            };
+        </script>
+    </body>
+</html>
